@@ -22,4 +22,20 @@ foreach (drone drone in drones)
 
 
     Console.WriteLine("Проверка завершена.");
+
+    foreach (drone d in drones)
+    {
+        if (d.BatteryLevel < 50)
+        {
+            Console.WriteLine($"Дрон {d.Model}: заряд {d.BatteryLevel}%");
+            Console.WriteLine("Подзарядить? (да/нет): ");
+
+            string answer = Console.ReadLine();
+
+            if (answer == "да")
+            {
+                d.ChargeBattery(30);
+            }
+        }
+    }
 }
