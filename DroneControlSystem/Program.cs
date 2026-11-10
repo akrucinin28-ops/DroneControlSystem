@@ -6,7 +6,8 @@ drone[] drones = new drone[]
 {
 new drone("DJI Mini 3", 85),
 new drone("Autel EVO Lite", 45),
-new drone("Parrot Anafi", 15)
+new drone("Parrot Anafi", 15),
+new drone("DJI Air 3")
 };
 
 foreach (drone drone in drones)
