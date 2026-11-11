@@ -1,6 +1,12 @@
 ﻿using DroneControlSystem;
-Console.WriteLine("=== Система управления БПЛА (версия 1.0) ===\n");
+Console.WriteLine("=== Система управления БПЛА (версия 2.0) ===");
 // Создание объекта дрона с помощью конструктора
+Console.Write("Введите команду (1 — взлёт, 2 — расчёт времени, 0 — выход): ");
+string input = Console.ReadLine();
+if (!int.TryParse(input, out int command))
+{
+    Console.WriteLine("Ошибка: введите число.");
+}
 drone myDrone = new drone("DJI Mini 3", 85);
 drone[] drones = new drone[]
 {
