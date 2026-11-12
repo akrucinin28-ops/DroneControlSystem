@@ -1,56 +1,109 @@
-﻿using DroneControlSystem;
+﻿using System;
+using DroneControlSystem;
 
-
-
-Console.WriteLine("*******************************************");
-Console.WriteLine("=== Система управления БПЛА (версия 2.0) ===");
-Console.WriteLine("*******************************************");
-
-// Создание объекта дрона с помощью конструктора
-Console.Write("Введите команду (1 — взлёт, 2 — расчёт времени, 0 — выход): ");
-string input = Console.ReadLine();
-if (!int.TryParse(input, out int command))
+drone[] drones =
 {
-    Console.WriteLine("Ошибка: введите число.");
-}
-drone myDrone = new drone("DJI Mini 3", 85);
-drone[] drones = new drone[]
-{
-new drone("DJI Mini 3", 85),
-new drone("Autel EVO Lite", 45),
-new drone("Parrot Anafi", 15),
-new drone("DJI Air 3")
+    new drone("DJI Mini 3", 85),
+    new drone("Autel EVO Lite", 45),
+    new drone("Parrot Anafi", 15),
+    new drone("DJI Air 3")
 };
 
-foreach (drone drone in drones)
+while (true)
 {
-    drone.PrintInfo();
+    Console.WriteLine();
+    Console.WriteLine("=== Система управления БПЛА (версия 3.0) ===");
+    Console.WriteLine("1. Показать информацию о всех дронах");
+    Console.WriteLine("2. Взлёт выбранного дрона");
+    Console.WriteLine("3. Подзарядка выбранного дрона");
+    Console.WriteLine("4. Расчёт времени полёта");
+    Console.WriteLine("5. Сохранить состояние в файл");
+    Console.WriteLine("6. Загрузить состояние из файла");
+    Console.WriteLine("0. Выход");
+    Console.Write("Выберите действие: ");
 
-    if (drone.BatteryLevel < 20)
+    if (!int.TryParse(Console.ReadLine(), out int choice))
     {
-        Console.WriteLine("Внимание низкий заряд баттери");
+        Console.WriteLine("Ошибка! Введите число.");
+        continue;
+    }
+
+    if (choice == 0)
+    {
+        Console.WriteLine("Выход из программы.");
+        break;
+    }
+
+    if (choice == 1)
+    {
+        foreach (drone d in drones)
+        {
+            d.PrintInfo();
+        }
+        continue;
+    }
+
+    if (choice == 5 || choice == 6)
+    {
+        Console.WriteLine("Эту функцию добавим в задании 2.");
+        continue;
+    }
+
+    if (choice < 2 || choice > 4)
+    {
+        Console.WriteLine("Такого пункта меню нет.");
+        continue;
     }
 
     Console.WriteLine();
+    Console.WriteLine("Список дронов:");
 
-
-    Console.WriteLine("Проверка завершена.");
-
-    foreach (drone d in drones)
+    for (int i = 0; i < drones.Length; i++)
     {
-        if (d.BatteryLevel < 50)
+        Console.WriteLine($"{i + 1}. {drones[i].Model}");
+    }
+
+    Console.Write("Выберите номер дрона: ");
+
+    if (!int.TryParse(Console.ReadLine(), out int number) ||
+        number < 1 || number > drones.Length)
+    {
+        Console.WriteLine("Неверный номер дрона!");
+        continue;
+    }
+
+    drone selectedDrone = drones[number - 1];
+
+    try
+    {
+        switch (choice)
         {
-            Console.WriteLine($"Дрон {d.Model}: заряд {d.BatteryLevel}%");
-            Console.WriteLine("Подзарядить? (да/нет): ");
+            case 2:
+                selectedDrone.TakeOff();
+                break;
 
-            string answer = Console.ReadLine();
+            case 3:
+                Console.Write("Сколько процентов зарядить? ");
 
-            if (answer == "да")
-            {
-                d.ChargeBattery(30);
-            }
+                if (int.TryParse(Console.ReadLine(), out int amount)
+                    && amount > 0 && amount <= 100)
+                {
+                    selectedDrone.ChargeBattery(amount);
+                    selectedDrone.PrintInfo();
+                }
+                else
+                {
+                    Console.WriteLine("Введите число от 1 до 100.");
+                }
+                break;
+
+            case 4:
+                selectedDrone.CalculateFlightTime();
+                break;
         }
-        Mission mission = new Mission("Разведка", drones[0], 100);
-        mission.Start();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("Ошибка: " + ex.Message);
     }
 }

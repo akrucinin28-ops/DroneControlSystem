@@ -49,4 +49,11 @@ public void ChargeBattery(int amount)
         }
         Console.WriteLine($"Заряд после подзарядки: {BatteryLevel}%");
     }
+    public void CalculateFlightTime()
+    {
+        double flightTime = BatteryLevel * 0.3;
+
+        Console.WriteLine(
+            $"Дрон {Model}: примерное время полёта {flightTime:F1} минут");
+    }
 }
