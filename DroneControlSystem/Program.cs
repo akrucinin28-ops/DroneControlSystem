@@ -1,20 +1,16 @@
 ﻿using DroneControlSystem;
-<<<<<<< HEAD
+
+
+
+Console.WriteLine("*******************************************");
 Console.WriteLine("=== Система управления БПЛА (версия 2.0) ===");
-=======
 Console.WriteLine("*******************************************");
-Console.WriteLine("*** Система управления БПЛА (версия 1.0) ***");
-Console.WriteLine("*******************************************");
->>>>>>> feature/header-style
+
 // Создание объекта дрона с помощью конструктора
 Console.Write("Введите команду (1 — взлёт, 2 — расчёт времени, 0 — выход): ");
 string input = Console.ReadLine();
 if (!int.TryParse(input, out int command))
 {
-<<<<<<< HEAD
-=======
-
->>>>>>> feature/header-style
     Console.WriteLine("Ошибка: введите число.");
 }
 drone myDrone = new drone("DJI Mini 3", 85);
@@ -54,5 +50,7 @@ foreach (drone drone in drones)
                 d.ChargeBattery(30);
             }
         }
+        Mission mission = new Mission("Разведка", drones[0], 100);
+        mission.Start();
     }
 }
