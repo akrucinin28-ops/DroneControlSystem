@@ -1,5 +1,8 @@
 ﻿using System;
 using DroneControlSystem;
+using System.IO;
+using System.Text.Json;
+
 
 drone[] drones =
 {
@@ -32,6 +35,19 @@ while (true)
     {
         Console.WriteLine("Выход из программы.");
         break;
+    }
+
+    if (choice == 5)
+    {
+        SaveDrones(drones, "drones.json");
+        continue;
+    }
+
+    if (choice == 6)
+    {
+        drones = LoadDrones("drones.json");
+        Console.WriteLine("Загрузка завершена!");
+        continue;
     }
 
     if (choice == 1)
@@ -106,4 +122,31 @@ while (true)
     {
         Console.WriteLine("Ошибка: " + ex.Message);
     }
+}
+
+static void SaveDrones(drone[] drones, string fileName)
+{
+    var options = new JsonSerializerOptions
+    {
+        WriteIndented = true
+    };
+
+    string json = JsonSerializer.Serialize(drones, options);
+    File.WriteAllText(fileName, json);
+
+    Console.WriteLine("Состояние дронов сохранено!");
+}
+
+static drone[] LoadDrones(string fileName)
+{
+    if (!File.Exists(fileName))
+    {
+        Console.WriteLine("Файл не найден!");
+        return Array.Empty<drone>();
+    }
+
+    string json = File.ReadAllText(fileName);
+
+    return JsonSerializer.Deserialize<drone[]>(json)
+           ?? Array.Empty<drone>();
 }

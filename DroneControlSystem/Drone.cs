@@ -8,6 +8,13 @@ public class drone
     public double Altitude { get; set; }   // высота в метрах
     public bool IsEngineOn { get; set; }
     // Конструктор
+    public drone()
+    {
+        Model = "";
+        BatteryLevel = 100;
+        Altitude = 0;
+        IsEngineOn = false;
+    }
     public drone(string model, int batteryLevel)
     {
         Model = model;
